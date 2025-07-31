@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UID 查询工具</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="index.css">
+
+
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-search"></i> WOS UID 查询工具</h1>
+            <p>输入寒霜启示录 UID 查询玩家信息</p>
+        </header>
+
+        <div class="card">
+            <div class="search-section">
+                <input type="text" id="uidInput" class="search-input" placeholder="请输入玩家 UID (例如: 251097717)" autocomplete="off">
+                <button id="searchBtn" class="search-btn">
+                    <i class="fas fa-search"></i> 查询
+                </button>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+                <p>正在查询中，请稍候...</p>
+            </div>
+
+            <div class="result-container" id="resultContainer">
+                <div class="result-header">
+                    <img id="avatarImg" class="avatar" src="" alt="玩家头像">
+                    <div class="user-info">
+                        <div class="user-name" id="userName">玩家昵称</div>
+                        <div class="user-id">UID: <span id="userId">-</span></div>
+                    </div>
+                </div>
+
+                <div class="result-grid">
+                    <div class="info-card">
+                        <h3><i class="fas fa-fire"></i> 熔炉等级</h3>
+                        <p class="furnace-level" id="levelResult">-</p>
+                        <button class="copy-btn" data-target="levelResult">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-globe-asia"></i> 州</h3>
+                        <p class="state-info" id="stateResult">-</p>
+                        <button class="copy-btn" data-target="stateResult">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-image"></i> 头像</h3>
+                        <div class="url-container" id="avatarResult">-</div>
+                        <button class="copy-btn" data-target="avatarResult">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-history"></i> 最后更新</h3>
+                        <p id="lastUpdate">-</p>
+                        <button class="copy-btn" data-target="lastUpdate">
+                            <i class="far fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card history-section">
+            <h2><i class="fas fa-history"></i> 查询历史</h2>
+
+            <div class="history-controls">
+                <div>
+                    <button id="clearHistoryBtn" class="history-btn">
+                        <i class="fas fa-trash-alt"></i> 清空历史
+                    </button>
+                </div>
+                <div>
+                    <span id="historyCount">0</span> 条记录
+                </div>
+            </div>
+
+            <div class="history-list" id="historyList">
+                <div class="empty-history" id="emptyHistory">暂无查询历史</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification">
+        <i class="fas fa-check-circle"></i>
+        <span>已成功复制到剪贴板</span>
+    </div>
+
+    <script src="index.js"></script>
+</body>
+
+</html>
