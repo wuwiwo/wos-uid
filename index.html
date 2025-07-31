@@ -1,26 +1,28 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UID 查询工具</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="index.css">
-
-
+    <link rel="stylesheet" href="index.css?3">
 </head>
-
 <body>
     <div class="container">
         <header>
             <h1><i class="fas fa-search"></i> WOS UID 查询工具</h1>
-            <p>输入寒霜启示录 UID 查询玩家信息</p>
+            <p>寒霜启示录 UID 查询玩家信息</p>
         </header>
 
         <div class="card">
             <div class="search-section">
-                <input type="text" id="uidInput" class="search-input" placeholder="请输入玩家 UID (例如: 251097717)" autocomplete="off">
+                <div class="search-input-container">
+                    <input type="text" id="uidInput" class="search-input" placeholder="请输入UID (例如: 251097717)" autocomplete="off">
+                    <button id="clearInputBtn" class="clear-input-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
                 <button id="searchBtn" class="search-btn">
                     <i class="fas fa-search"></i> 查询
                 </button>
@@ -33,9 +35,16 @@
 
             <div class="result-container" id="resultContainer">
                 <div class="result-header">
-                    <img id="avatarImg" class="avatar" src="" alt="玩家头像">
+                    <!-- 添加头像元素 -->
+                    <img id="avatarImg" class="avatar">
+                    
                     <div class="user-info">
-                        <div class="user-name" id="userName">玩家昵称</div>
+                        <div class="user-name-container">
+                            <div class="user-name" id="userName">玩家昵称</div>
+                            <button class="copy-btn" data-target="userName">
+                                <i class="far fa-copy"></i>
+                            </button>
+                        </div>
                         <div class="user-id">UID: <span id="userId">-</span></div>
                     </div>
                 </div>
@@ -101,7 +110,6 @@
         <span>已成功复制到剪贴板</span>
     </div>
 
-    <script src="index.js"></script>
+    <script src="index.js?4"></script>
 </body>
-
 </html>

@@ -1,3 +1,4 @@
+// index.js
 // 配置
 const API_SECRET = "tB87#kPtkxqOS2";
 const API_URL = "https://wos-giftcode-api.centurygame.com/api/player";
@@ -14,11 +15,12 @@ const LEVEL_MAPPING = {
     65: "FC 7", 66: "FC 7 - 1", 67: "FC 7 - 2", 68: "FC 7 - 3", 69: "FC 7 - 4",
     70: "FC 8", 71: "FC 8 - 1", 72: "FC 8 - 2", 73: "FC 8 - 3", 74: "FC 8 - 4",
     75: "FC 9", 76: "FC 9 - 1", 77: "FC 9 - 2", 78: "FC 9 - 3", 79: "FC 9 - 4",
-    80: "FC 10", 81: "FC 10 - 1", 82: "FC 10 - 2", 83: "FC 10 - 3", 84: "FC 10 - 4"
+    80: "FC 10", 81: "FC 10 - 1", 82: "FC 10 - 2", 83: "FC 10 - 3", 84: "FC 极寒"
 };
 
 // DOM 元素
 const uidInput = document.getElementById('uidInput');
+const clearInputBtn = document.getElementById('clearInputBtn');
 const searchBtn = document.getElementById('searchBtn');
 const resultContainer = document.getElementById('resultContainer');
 const loading = document.getElementById('loading');
@@ -31,6 +33,27 @@ const notification = document.getElementById('notification');
 // 从 localStorage 加载历史记录
 let searchHistory = JSON.parse(localStorage.getItem('uidSearchHistory')) || [];
 updateHistoryCount();
+
+// 页面加载时渲染历史记录
+document.addEventListener('DOMContentLoaded', () => {
+    renderHistory();
+    
+    // 如果有历史记录，显示第一条
+    if (searchHistory.length > 0) {
+        displayResult(searchHistory[0]);
+    }
+});
+
+// 输入框清空功能
+clearInputBtn.addEventListener('click', () => {
+    uidInput.value = '';
+    uidInput.focus();
+});
+
+// 监听输入框变化，显示/隐藏清空按钮
+uidInput.addEventListener('input', () => {
+    clearInputBtn.style.display = uidInput.value ? 'block' : 'none';
+});
 
 // 加载 MD5 库
 function loadMD5() {
@@ -200,25 +223,48 @@ function updateHistoryCount() {
     historyCount.textContent = searchHistory.length;
 }
 
+
 // 显示查询结果
 function displayResult(data) {
-    document.getElementById('userName').textContent = data.nickname;
-    document.getElementById('userId').textContent = data.fid;
-    
-    // 显示熔炉等级和图标（如果有）
+    // 确保先获取所有必要的元素
+    const userNameElement = document.getElementById('userName');
+    const userIdElement = document.getElementById('userId');
+    const avatarImg = document.getElementById('avatarImg');
     const levelElement = document.getElementById('levelResult');
-    levelElement.textContent = data.stove_level;
-    if (data.stove_lv_content && data.stove_lv_content.startsWith('http')) {
-        levelElement.innerHTML = `${data.stove_level} <img src="${data.stove_lv_content}" style="height:20px;vertical-align:middle">`;
+    const stateElement = document.getElementById('stateResult');
+    const avatarResultElement = document.getElementById('avatarResult');
+    const lastUpdateElement = document.getElementById('lastUpdate');
+    
+    // 设置元素内容
+    if (userNameElement) userNameElement.textContent = data.nickname;
+    if (userIdElement) userIdElement.textContent = data.fid;
+    
+    // 设置头像 - 添加null检查
+    if (avatarImg) {
+        avatarImg.src = data.avatar || 'https://via.placeholder.com/200?text=No+Avatar';
+    } else {
+        console.error('头像元素未找到');
     }
     
-    document.getElementById('stateResult').textContent = data.kid;
-    document.getElementById('avatarImg').src = data.avatar || 'https://via.placeholder.com/200';
-    document.getElementById('avatarResult').textContent = data.avatar || "无头像";
-    document.getElementById('lastUpdate').textContent = data.timestamp;
+    // 设置熔炉等级
+    if (levelElement) {
+        levelElement.textContent = data.stove_level;
+        if (data.stove_lv_content && data.stove_lv_content.startsWith('http')) {
+            levelElement.innerHTML = `${data.stove_level} `;
+        }
+    }
     
+    if (stateElement) stateElement.textContent = data.kid;
+    if (avatarResultElement) avatarResultElement.textContent = data.avatar || "无头像";
+    if (lastUpdateElement) lastUpdateElement.textContent = data.timestamp;
+    
+    // 显示结果容器
     resultContainer.style.display = 'block';
 }
+
+
+
+
 
 // 显示加载状态
 function showLoading(show) {
@@ -270,7 +316,14 @@ document.addEventListener('click', (e) => {
         const targetId = btn.getAttribute('data-target');
         const targetElement = document.getElementById(targetId);
         
-        const textToCopy = targetElement.textContent;
+        // 特殊处理昵称复制（避免复制按钮本身）
+        let textToCopy;
+        if (targetId === 'userName') {
+            textToCopy = targetElement.textContent;
+        } else {
+            textToCopy = targetElement.textContent;
+        }
+        
         navigator.clipboard.writeText(textToCopy).then(() => {
             showNotification('已复制到剪贴板', 'success');
         }).catch(err => {
@@ -313,6 +366,7 @@ uidInput.addEventListener('keypress', (e) => {
         searchBtn.click();
     }
 });
+
 
 // 初始化
 renderHistory();
