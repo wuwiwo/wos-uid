@@ -49,11 +49,6 @@ A web-based tool for querying player information in the game "寒霜启示录" (
 - `addToHistory(data)` - Manages query history
 - `generateMD5(str)` - Creates API signatures
 
-### 🔧 Configuration
-
-Modify the following constants in index.js if needed:
-- API_SECRET = "tB87#kPtkxqOS2"
-- API_URL = "https://wos-giftcode-api.centurygame.com/api/player"
 
 ### 🌟 Special Features
 
