@@ -25,7 +25,7 @@ A web-based tool for querying player information in the game "寒霜启示录" (
 
 ### 🚀 Quick Start
 
-1. **Access the Tool**: Open `index.html` in a web browser
+1. **Access the Tool**: Open the tool at [https://wuwiwo.github.io/wos-uid/](https://wuwiwo.github.io/wos-uid/)
 2. **Enter UID**: Input the player's UID in the search box (e.g., `251097717`)
 3. **Query**: Click the search button or press Enter
 4. **View Results**: Player information will be displayed below
@@ -49,7 +49,11 @@ A web-based tool for querying player information in the game "寒霜启示录" (
 - `addToHistory(data)` - Manages query history
 - `generateMD5(str)` - Creates API signatures
 
+### 🔧 Configuration
 
+Modify the following constants in index.js if needed:
+- API_SECRET = "tB87#kPtkxqOS2"
+- API_URL = "https://wos-giftcode-api.centurygame.com/api/player"
 
 ### 🌟 Special Features
 
@@ -88,6 +92,9 @@ Works on all modern browsers including:
 
 用于查询游戏"寒霜启示录"玩家信息的网页工具，通过UID获取玩家数据。
 
+### 🌐 在线使用地址
+[https://wuwiwo.github.io/wos-uid/](https://wuwiwo.github.io/wos-uid/)
+
 ### ✨ 功能特点
 
 - **玩家信息查询**: 通过输入UID查询玩家详细信息
@@ -104,7 +111,7 @@ Works on all modern browsers including:
 
 ### 🚀 快速开始
 
-1. **打开工具**: 在浏览器中打开 `index.html` 文件
+1. **打开工具**: 访问 [https://wuwiwo.github.io/wos-uid/](https://wuwiwo.github.io/wos-uid/)
 2. **输入UID**: 在搜索框中输入玩家UID（例如：`251097717`）
 3. **查询**: 点击查询按钮或按Enter键
 4. **查看结果**: 玩家信息将显示在下方
@@ -127,8 +134,6 @@ Works on all modern browsers including:
 - `displayResult(data)` - 渲染玩家信息
 - `addToHistory(data)` - 管理查询历史
 - `generateMD5(str)` - 生成API签名
-
-
 
 ### 🌟 特色功能
 
@@ -160,8 +165,3 @@ Works on all modern browsers including:
 - 查询历史仅存储在本地浏览器中
 - API请求仅包含必要的UID和认证数据
 
----
-
-## 📄 License
-
-This project is for educational and personal use only. All game data belongs to the respective game developers.
