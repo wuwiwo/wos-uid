@@ -1,115 +1,121 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UID 查询工具</title>
+    <title>寒霜领主档案 - Frost Lord Registry</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="index.css?3">
+    <link rel="stylesheet" href="index.css?2">
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <h1><i class="fas fa-search"></i> WOS UID 查询工具</h1>
-            <p>寒霜启示录 UID 查询玩家信息</p>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="main-wrapper">
+        <header class="app-header">
+            <div class="header-top">
+                <div class="language-selector">
+                    <i class="fas fa-globe"></i>
+                    <select id="langSelect" onchange="changeLanguage(this.value)">
+                        <option value="zh">简体中文</option>
+                        <option value="zh-TW">繁體中文</option>
+                        <option value="en">English</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="ar">العربية</option>
+                    </select>
+
+                </div>
+            </div>
+
+            <div class="logo-area">
+                <i class="fas fa-snowflake fa-2x"></i>
+                <h1 class="lang-title">寒霜领主档案</h1>
+            </div>
+            <p class="lang-subtitle">寒霜启示录 · 领主uid 搜索工具</p>
         </header>
 
-        <div class="card">
-            <div class="search-section">
-                <div class="search-input-container">
-                    <input type="text" id="uidInput" class="search-input" placeholder="请输入UID (例如: 251097717)" autocomplete="off">
-                    <button id="clearInputBtn" class="clear-input-btn">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <button id="searchBtn" class="search-btn">
-                    <i class="fas fa-search"></i> 查询
+        <div class="glass-panel search-panel">
+            <div class="input-group">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="uidInput" placeholder="输入玩家 UID..." autocomplete="off">
+                <button id="clearInputBtn" class="icon-btn">
+                    <i class="fas fa-times-circle"></i>
                 </button>
             </div>
+            <button id="searchBtn" class="cta-btn">
+                <span class="lang-searchBtn">立即查询</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
 
-            <div class="loading" id="loading">
-                <div class="loading-spinner"></div>
-                <p>正在查询中，请稍候...</p>
-            </div>
+        <div class="loading-container" id="loading">
+            <div class="spinner"></div>
+        </div>
 
-            <div class="result-container" id="resultContainer">
-                <div class="result-header">
-                    <!-- 添加头像元素 -->
-                    <img id="avatarImg" class="avatar">
-                    
-                    <div class="user-info">
-                        <div class="user-name-container">
-                            <div class="user-name" id="userName">玩家昵称</div>
-                            <button class="copy-btn" data-target="userName">
-                                <i class="far fa-copy"></i>
-                            </button>
+        <div id="resultContainer" class="result-wrapper" style="display: none;">
+            <div class="glass-panel profile-card">
+                <div class="profile-header">
+                    <div class="avatar-frame">
+                        <img id="avatarImg" src="" alt="Avatar" class="avatar-img">
+                    </div>
+                    <div class="profile-info">
+                        <h2 id="userName" class="player-name">-</h2>
+                        <div class="uid-badge" onclick="copyText('userId')">
+                            <span>UID: </span>
+                            <span id="userId">-</span>
+                            <i class="far fa-copy"></i>
                         </div>
-                        <div class="user-id">UID: <span id="userId">-</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="glass-panel stat-card">
+                    <div class="stat-icon"><i class="fas fa-fire"></i></div>
+                    <div class="stat-content">
+                        <span class="stat-label lang-levelLabel">熔炉等级</span>
+                        <div class="stat-value" id="levelResult">-</div>
                     </div>
                 </div>
 
-                <div class="result-grid">
-                    <div class="info-card">
-                        <h3><i class="fas fa-fire"></i> 熔炉等级</h3>
-                        <p class="furnace-level" id="levelResult">-</p>
-                        <button class="copy-btn" data-target="levelResult">
-                            <i class="far fa-copy"></i>
-                        </button>
+                <div class="glass-panel stat-card">
+                    <div class="stat-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div class="stat-content">
+                        <span class="stat-label lang-stateLabel">所在州</span>
+                        <div class="stat-value">#<span id="stateResult">-</span></div>
                     </div>
+                </div>
 
-                    <div class="info-card">
-                        <h3><i class="fas fa-globe-asia"></i> 州</h3>
-                        <p class="state-info" id="stateResult">-</p>
-                        <button class="copy-btn" data-target="stateResult">
-                            <i class="far fa-copy"></i>
-                        </button>
-                    </div>
-
-                    <div class="info-card">
-                        <h3><i class="fas fa-image"></i> 头像</h3>
-                        <div class="url-container" id="avatarResult">-</div>
-                        <button class="copy-btn" data-target="avatarResult">
-                            <i class="far fa-copy"></i>
-                        </button>
-                    </div>
-
-                    <div class="info-card">
-                        <h3><i class="fas fa-history"></i> 最后更新</h3>
-                        <p id="lastUpdate">-</p>
-                        <button class="copy-btn" data-target="lastUpdate">
-                            <i class="far fa-copy"></i>
-                        </button>
+                <div class="glass-panel stat-card">
+                    <div class="stat-icon"><i class="fas fa-clock"></i></div>
+                    <div class="stat-content">
+                        <span class="stat-label lang-timeLabel">数据时间</span>
+                        <div class="stat-value small-text" id="lastUpdate">-</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="card history-section">
-            <h2><i class="fas fa-history"></i> 查询历史</h2>
-
-            <div class="history-controls">
-                <div>
-                    <button id="clearHistoryBtn" class="history-btn">
-                        <i class="fas fa-trash-alt"></i> 清空历史
-                    </button>
-                </div>
-                <div>
-                    <span id="historyCount">0</span> 条记录
-                </div>
+        <div class="glass-panel history-panel">
+            <div class="panel-header">
+                <h3 class="lang-historyTitle"><i class="fas fa-history"></i> 最近查询</h3>
+                <button id="clearHistoryBtn" class="text-btn lang-clearBtn">清空</button>
             </div>
-
             <div class="history-list" id="historyList">
-                <div class="empty-history" id="emptyHistory">暂无查询历史</div>
             </div>
         </div>
     </div>
 
-    <div class="notification" id="notification">
-        <i class="fas fa-check-circle"></i>
-        <span>已成功复制到剪贴板</span>
-    </div>
+    <div id="notification" class="toast"></div>
 
-    <script src="index.js?4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-md5/2.19.0/js/md5.min.js"></script>
+    <script src="i18n.js"></script>
+    <script src="index.js?9"></script>
 </body>
+
 </html>
