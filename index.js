@@ -5,6 +5,7 @@ const API_URL = "https://wos-giftcode-api.centurygame.com/api/player";
 
 // 熔炉等级映射
 const LEVEL_MAPPING = {
+    30:"30",
     31: "30-1", 32: "30-2", 33: "30-3", 34: "30-4",
     35: "FC 1", 36: "FC 1 - 1", 37: "FC 1 - 2", 38: "FC 1 - 3", 39: "FC 1 - 4",
     40: "FC 2", 41: "FC 2 - 1", 42: "FC 2 - 2", 43: "FC 2 - 3", 44: "FC 2 - 4",
@@ -223,10 +224,8 @@ function updateHistoryCount() {
     historyCount.textContent = searchHistory.length;
 }
 
-
-// 显示查询结果
+// 修复后的显示函数
 function displayResult(data) {
-    // 确保先获取所有必要的元素
     const userNameElement = document.getElementById('userName');
     const userIdElement = document.getElementById('userId');
     const avatarImg = document.getElementById('avatarImg');
@@ -235,33 +234,38 @@ function displayResult(data) {
     const avatarResultElement = document.getElementById('avatarResult');
     const lastUpdateElement = document.getElementById('lastUpdate');
     
-    // 设置元素内容
-    if (userNameElement) userNameElement.textContent = data.nickname;
-    if (userIdElement) userIdElement.textContent = data.fid;
+    // 设置基础信息
+    if (userNameElement) userNameElement.textContent = data.nickname || "未知玩家";
+    if (userIdElement) userIdElement.textContent = data.fid || "-";
     
-    // 设置头像 - 添加null检查
+    // 安全设置头像
     if (avatarImg) {
         avatarImg.src = data.avatar || 'https://via.placeholder.com/200?text=No+Avatar';
-    } else {
-        console.error('头像元素未找到');
     }
     
-    // 设置熔炉等级
+    // --- 核心修复：处理熔炉等级 ---
     if (levelElement) {
-        levelElement.textContent = data.stove_level;
-        if (data.stove_lv_content && data.stove_lv_content.startsWith('http')) {
-            levelElement.innerHTML = `${data.stove_level} `;
+        // 确保 data.stove_level 有值
+        const levelText = data.stove_level || "等级未知";
+        
+        // 安全判断 stove_lv_content 是否为图片链接
+        // 增加 String() 强制转换，防止数字类型导致 startsWith 报错
+        const lvContent = String(data.stove_lv_content || "");
+        
+        if (lvContent.startsWith('http')) {
+            levelElement.innerHTML = `${levelText} <img src="${lvContent}" style="height:20px; vertical-align:middle;">`;
+        } else {
+            levelElement.textContent = levelText;
         }
     }
     
-    if (stateElement) stateElement.textContent = data.kid;
+    if (stateElement) stateElement.textContent = data.kid || "未知";
     if (avatarResultElement) avatarResultElement.textContent = data.avatar || "无头像";
-    if (lastUpdateElement) lastUpdateElement.textContent = data.timestamp;
+    if (lastUpdateElement) lastUpdateElement.textContent = data.timestamp || "-";
     
     // 显示结果容器
-    resultContainer.style.display = 'block';
+    if (resultContainer) resultContainer.style.display = 'block';
 }
-
 
 
 
